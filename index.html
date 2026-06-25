@@ -202,7 +202,7 @@
     <form id="consentForm">
       <div class="form-group">
         <label for="name">성명</label>
-        <input type="text" id="name" placeholder="홍길동" required autocomplete="off">
+        <input type="text" id="name" placeholder="홍길동" required autocomplete="off" pattern="^[가-힣a-zA-Z\s]{2,20}$" title="올바른 성명을 입력해 주세요 (숫자, 특수문자 불가)">
       </div>
       <div class="form-group">
         <label for="phone">연락처</label>
@@ -279,6 +279,15 @@
       }
 
       const name = document.getElementById('name').value.trim();
+      
+      // 이름 유효성 검사 (정규식)
+      const nameRegex = /^[가-힣a-zA-Z\s]{2,20}$/;
+      if (!nameRegex.test(name)) {
+        alert("올바른 성명을 입력해 주세요.\n(숫자, 특수문자, 초성/모음 단독 사용 불가)");
+        document.getElementById('name').focus();
+        return;
+      }
+
       const phone = document.getElementById('phone').value.trim();
       
       // 연락처 유효성 검사 (정규식)
