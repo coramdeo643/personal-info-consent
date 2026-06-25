@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="배드민턴 스윙 분석 시스템 - 개인정보 및 초상권 수집·이용 전자 동의서">
   <title>전자 동의서 시스템</title>
   
   <!-- Pretendard Web Font -->
@@ -63,15 +64,50 @@
       overflow-y: auto;
       font-size: 13.5px;
       line-height: 1.6;
-      margin-bottom: 24px;
+      margin-bottom: 0;
       color: #4b5563;
-      -webkit-overflow-scrolling: touch;
     }
     
     .consent-box strong {
       color: #1f2937;
     }
     
+    /* 스크롤 안내 배너 */
+    .scroll-guide {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: #fef3c7;
+      color: #92400e;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 10px;
+      border-radius: 0 0 8px 8px;
+      border: 1px solid #fde68a;
+      border-top: none;
+      margin-bottom: 24px;
+      transition: all 0.3s ease;
+    }
+
+    .scroll-guide.confirmed {
+      background: #d1fae5;
+      color: #065f46;
+      border-color: #a7f3d0;
+    }
+
+    .scroll-guide-icon {
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+    
+    /* 폼 비활성화 상태 */
+    .form-disabled {
+      opacity: 0.5;
+      pointer-events: none;
+      user-select: none;
+    }
+
     .form-group {
       margin-bottom: 16px;
     }
@@ -157,6 +193,34 @@
       background: #9ca3af;
       cursor: not-allowed;
     }
+
+    /* 오프라인 재전송 토스트 */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #1f2937;
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      z-index: 1000;
+      opacity: 0;
+      transition: all 0.3s ease;
+      max-width: 90%;
+      text-align: center;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .toast.success { background: #065f46; }
+    .toast.error { background: #991b1b; }
+    .toast.info { background: #1e40af; }
     
     /* Custom scrollbar */
     .consent-box::-webkit-scrollbar {
@@ -178,28 +242,44 @@
 </head>
 <body>
 
+  <!-- 토스트 알림 컨테이너 -->
+  <div class="toast" id="toast"></div>
+
   <div class="container">
     <h1>개인정보 및 초상권 수집·이용 동의서</h1>
     
-    <div class="consent-box">
+    <div class="consent-box" id="consentBox">
       <strong>[필수] 개인정보 및 초상권 수집·이용 동의 안내</strong><br><br>
-      배드민턴 스윙 분석 시스템 연구 및 개발을 위해 「개인정보 보호법」 제15조 및 제22조에 따라 아래와 같이 귀하의 개인정보 및 초상권을 수집·이용하고자 합니다. 내용을 자세히 읽으신 후 동의 여부를 결정해 주시기 바랍니다.<br><br>
+      (주)플레이힛은 배드민턴 스윙 분석 시스템 연구 및 개발을 위해 「개인정보 보호법」 제15조 및 제22조에 따라 아래와 같이 귀하의 개인정보 및 초상권을 수집·이용하고자 합니다. 내용을 자세히 읽으신 후 동의 여부를 결정해 주시기 바랍니다.<br><br>
       <strong>1. 수집 및 이용 목적</strong><br>
       • 배드민턴 스윙 자세 분석 및 데이터 축적<br>
       • 스윙 분석 AI(인공지능) 알고리즘 학습용 데이터셋 구축 및 내부 연구<br>
-      (※ 수집된 영상 데이터는 당사 내부 개발팀에서만 활용되며, 외부에 공개되거나 제3자에게 제공되지 않습니다.)<br><br>
+      (※ 수집된 영상 데이터는 (주)플레이힛 내부 개발팀에서만 활용되며, 외부에 공개되거나 제3자에게 제공되지 않습니다.)<br><br>
       <strong>2. 수집하는 개인정보 및 초상권 항목</strong><br>
       • 필수 항목: 성명, 연락처, 배드민턴 스윙 촬영 영상 (얼굴, 전신, 신체 관절 움직임 정보 포함)<br><br>
       <strong>3. 개인정보의 보유 및 이용 기간</strong><br>
-      • 동의일로부터 3년 (보유 기간 경과 또는 이용 목적이 달성된 후에는 해당 데이터를 지체 없이 안전하게 파기합니다.)<br><br>
+      • 동의일로부터 3년<br>
+      • 보유 기간 경과 또는 이용 목적이 달성된 후에는 전자적 파일은 복구 불가능한 방법으로 영구 삭제하며, 그 외 기록물은 파쇄하여 파기합니다.<br><br>
       <strong>4. 동의를 거부할 권리 및 동의 거부에 따른 불이익</strong><br>
       • 귀하는 위 개인정보 및 영상 수집·이용에 대한 동의를 거부할 법적 권리가 있습니다.<br>
       • 단, 필수 정보 수집에 동의하지 않으실 경우 영상 촬영 및 스윙 분석 프로젝트 참여가 제한됩니다.<br><br>
       <strong>5. 초상권 이용 동의</strong><br>
-      • 본인은 위 목적을 위해 본인의 얼굴 및 신체가 포함된 영상이 촬영되는 것과, 해당 영상이 AI 학습 및 내부 연구 목적으로 이용되는 것에 명시적으로 동의합니다.
+      • 본인은 위 목적을 위해 본인의 얼굴 및 신체가 포함된 영상이 촬영되는 것과, 해당 영상이 AI 학습 및 내부 연구 목적으로 이용되는 것에 명시적으로 동의합니다.<br><br>
+      <strong>6. 동의 철회</strong><br>
+      • 동의를 철회하고자 할 경우 아래 개인정보 보호 책임자에게 연락하시면 지체 없이 개인정보를 파기하고, 그 결과를 통보해 드립니다.<br><br>
+      <strong>7. 개인정보 보호 책임자</strong><br>
+      • 성명: 최정태<br>
+      • 이메일: jt.playhit@gmail.com<br>
+      • 연락처: 010-5789-9338
     </div>
 
-    <form id="consentForm">
+    <!-- 스크롤 안내 배너 -->
+    <div class="scroll-guide" id="scrollGuide">
+      <span class="scroll-guide-icon">⬇️</span>
+      <span id="scrollGuideText">동의 내용을 끝까지 읽어주세요</span>
+    </div>
+
+    <form id="consentForm" class="form-disabled">
       <div class="form-group">
         <label for="name">성명</label>
         <input type="text" id="name" placeholder="홍길동" required autocomplete="off" pattern="^[가-힣a-zA-Z\s]{2,20}$" title="올바른 성명을 입력해 주세요 (숫자, 특수문자 불가)">
@@ -211,7 +291,7 @@
       
       <label>서명 (위 내용에 동의하며 직접 서명합니다)</label>
       <div class="signature-wrapper">
-        <canvas id="signatureCanvas"></canvas>
+        <canvas id="signatureCanvas" role="img" aria-label="서명 영역"></canvas>
         <button type="button" class="clear-btn" id="clearSignature">지우기</button>
       </div>
 
@@ -219,15 +299,34 @@
     </form>
   </div>
 
-  <!-- Signature Pad 라이브러리 -->
-  <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+  <!-- Signature Pad 라이브러리 (SRI 적용) -->
+  <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"
+          integrity="sha384-dPowQo9uxJU703klzvnG+vzLHQDNmO/zREXw6BhCMupB54CE70wj6SWOGVPySK3s"
+          crossorigin="anonymous"></script>
   
   <!-- Firebase SDK (ES Module 방식) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    // 사용자님이 전달해주신 Firebase 설정
+    /*
+     * ⚠️ 보안 주의사항:
+     * 클라이언트 SDK 특성상 아래 API Key는 브라우저에 노출됩니다.
+     * 반드시 Firestore Security Rules에서 쓰기 권한을 제한하세요.
+     * 
+     * 권장 Firestore Rules 예시:
+     * rules_version = '2';
+     * service cloud.firestore {
+     *   match /databases/{database}/documents {
+     *     match /consents/{document} {
+     *       allow create: if request.resource.data.keys().hasAll(['name', 'phone', 'signature', 'timestamp'])
+     *                     && request.resource.data.name is string
+     *                     && request.resource.data.phone is string;
+     *       allow read, update, delete: if false;
+     *     }
+     *   }
+     * }
+     */
     const firebaseConfig = {
       apiKey: "AIzaSyCSORdzTPC4Ay5n9A9QplMUHvXTGJeCAEQ",
       authDomain: "personal-info-consent.firebaseapp.com",
@@ -242,10 +341,18 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // Signature Pad 캔버스 설정
+    // ── 토스트 알림 유틸 ──
+    function showToast(message, type = 'info', duration = 3000) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.className = 'toast ' + type + ' show';
+      setTimeout(() => { toast.className = 'toast'; }, duration);
+    }
+
+    // ── Signature Pad 캔버스 설정 ──
     const canvas = document.getElementById('signatureCanvas');
     const signaturePad = new SignaturePad(canvas, {
-      penColor: "rgb(17, 24, 39)", // 진한 회색/검정
+      penColor: "rgb(17, 24, 39)",
       backgroundColor: "rgb(255, 255, 255)"
     });
 
@@ -255,18 +362,123 @@
       canvas.width = canvas.offsetWidth * ratio;
       canvas.height = canvas.offsetHeight * ratio;
       canvas.getContext("2d").scale(ratio, ratio);
-      signaturePad.clear(); // 크기 변경 시 내용 초기화
+      signaturePad.clear();
     }
 
     window.addEventListener("resize", resizeCanvas);
-    resizeCanvas(); // 초기 사이즈 세팅
+    resizeCanvas();
 
     // 지우기 버튼
     document.getElementById('clearSignature').addEventListener('click', () => {
       signaturePad.clear();
     });
 
-    // 폼 제출 이벤트
+    // ── 스크롤 가드: 동의 내용을 끝까지 읽어야 폼 활성화 ──
+    const consentBox = document.getElementById('consentBox');
+    const consentForm = document.getElementById('consentForm');
+    const scrollGuide = document.getElementById('scrollGuide');
+    const scrollGuideText = document.getElementById('scrollGuideText');
+    let consentRead = false;
+
+    function checkScrollEnd() {
+      // 스크롤 위치 + 보이는 높이 >= 전체 높이 - 10px 오차 허용
+      const atBottom = consentBox.scrollTop + consentBox.clientHeight >= consentBox.scrollHeight - 10;
+      if (atBottom && !consentRead) {
+        consentRead = true;
+        consentForm.classList.remove('form-disabled');
+        scrollGuide.classList.add('confirmed');
+        scrollGuideText.textContent = '✓ 동의 내용을 확인하였습니다';
+      }
+    }
+
+    // 내용이 스크롤 불필요할 만큼 짧으면 즉시 활성화
+    function checkInitialScroll() {
+      if (consentBox.scrollHeight <= consentBox.clientHeight + 10) {
+        consentRead = true;
+        consentForm.classList.remove('form-disabled');
+        scrollGuide.classList.add('confirmed');
+        scrollGuideText.textContent = '✓ 동의 내용을 확인하였습니다';
+      }
+    }
+
+    consentBox.addEventListener('scroll', checkScrollEnd);
+    checkInitialScroll();
+
+    // ── 연락처 자동 하이픈 포맷 ──
+    const phoneInput = document.getElementById('phone');
+    phoneInput.addEventListener('input', (e) => {
+      let value = e.target.value.replace(/[^0-9]/g, ''); // 숫자만 추출
+
+      if (value.length > 11) value = value.slice(0, 11);
+
+      if (value.length > 7) {
+        // 010-1234-5678 형식
+        value = value.slice(0, 3) + '-' + value.slice(3, 7) + '-' + value.slice(7);
+      } else if (value.length > 3) {
+        // 010-1234 형식
+        value = value.slice(0, 3) + '-' + value.slice(3);
+      }
+
+      e.target.value = value;
+    });
+
+    // ── 오프라인 대응: 미전송 데이터 재전송 ──
+    const PENDING_KEY = 'pendingConsents';
+
+    function getPendingConsents() {
+      try {
+        return JSON.parse(localStorage.getItem(PENDING_KEY)) || [];
+      } catch { return []; }
+    }
+
+    function savePendingConsent(data) {
+      const pending = getPendingConsents();
+      pending.push({ ...data, savedAt: new Date().toISOString() });
+      localStorage.setItem(PENDING_KEY, JSON.stringify(pending));
+    }
+
+    function removePendingConsent(index) {
+      const pending = getPendingConsents();
+      pending.splice(index, 1);
+      localStorage.setItem(PENDING_KEY, JSON.stringify(pending));
+    }
+
+    async function retryPendingConsents() {
+      const pending = getPendingConsents();
+      if (pending.length === 0) return;
+
+      showToast(`미전송 동의서 ${pending.length}건을 재전송 중...`, 'info');
+
+      // 역순으로 처리 (인덱스 안정성)
+      for (let i = pending.length - 1; i >= 0; i--) {
+        try {
+          const item = pending[i];
+          await addDoc(collection(db, "consents"), {
+            name: item.name,
+            phone: item.phone,
+            signature: item.signature,
+            timestamp: serverTimestamp(),
+            userAgent: item.userAgent,
+            originalTimestamp: item.savedAt // 원래 작성 시각 보존
+          });
+          removePendingConsent(i);
+        } catch (err) {
+          console.warn("재전송 실패:", err);
+        }
+      }
+
+      const remaining = getPendingConsents();
+      if (remaining.length === 0) {
+        showToast('미전송 동의서가 모두 전송되었습니다!', 'success');
+      } else {
+        showToast(`${remaining.length}건 재전송 실패. 네트워크 확인 후 다시 시도해 주세요.`, 'error', 5000);
+      }
+    }
+
+    // 페이지 로드 시 미전송 데이터 재전송 시도
+    retryPendingConsents();
+
+    // ── 폼 제출 이벤트 ──
     const form = document.getElementById('consentForm');
     const submitBtn = document.getElementById('submitBtn');
 
@@ -298,31 +510,56 @@
         return;
       }
 
-      const signatureImage = signaturePad.toDataURL(); // 서명 이미지를 Base64 문자열로 변환
+      // 서명 이미지를 JPEG로 압축하여 Base64 변환 (PNG 대비 ~60% 용량 절감)
+      const signatureImage = signaturePad.toDataURL('image/jpeg', 0.5);
 
       // 중복 제출 방지를 위한 버튼 비활성화
       submitBtn.disabled = true;
       submitBtn.textContent = "제출 중...";
 
+      const consentData = {
+        name: name,
+        phone: phone,
+        signature: signatureImage,
+        userAgent: navigator.userAgent
+      };
+
       try {
         // Firestore 'consents' 컬렉션에 데이터 추가
         await addDoc(collection(db, "consents"), {
-          name: name,
-          phone: phone,
-          signature: signatureImage,
-          timestamp: serverTimestamp(),
-          userAgent: navigator.userAgent
+          ...consentData,
+          timestamp: serverTimestamp()
         });
 
         alert(`동의가 완료되었습니다.\n감사합니다, ${name} 선수님!`);
         
-        // 키오스크 모드: 다음 사람을 위해 폼 즉시 초기화
+        // 다음 사람을 위해 폼 즉시 초기화
         form.reset();
         signaturePad.clear();
 
       } catch (error) {
         console.error("데이터 저장 중 오류 발생: ", error);
-        alert("네트워크 오류가 발생했습니다. 관리자에게 문의해 주세요.");
+
+        // 오프라인 임시 저장
+        savePendingConsent(consentData);
+
+        // 에러 코드별 상세 메시지
+        let userMessage;
+        switch (error.code) {
+          case 'permission-denied':
+            userMessage = "접근 권한이 없습니다. 관리자에게 문의해 주세요.";
+            break;
+          case 'unavailable':
+            userMessage = "네트워크 연결이 불안정합니다.\n동의서가 임시 저장되었으며, 다음 접속 시 자동 전송됩니다.";
+            break;
+          case 'resource-exhausted':
+            userMessage = "서버 요청 한도를 초과했습니다. 잠시 후 다시 시도해 주세요.";
+            break;
+          default:
+            userMessage = "네트워크 오류가 발생했습니다.\n동의서가 임시 저장되었으며, 다음 접속 시 자동 전송됩니다.";
+        }
+        alert(userMessage);
+
       } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = "동의 및 제출하기";
