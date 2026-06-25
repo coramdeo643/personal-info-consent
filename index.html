@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>전자 동의서 시스템</title>
+  
+  <!-- Pretendard Web Font -->
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+  
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --bg: #f3f4f6;
+      --surface: #ffffff;
+      --text: #1f2937;
+      --text-muted: #6b7280;
+      --border: #e5e7eb;
+    }
+    
+    * {
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    
+    .container {
+      background: var(--surface);
+      max-width: 600px;
+      width: 100%;
+      padding: 32px;
+      border-radius: 16px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+    
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-top: 0;
+      margin-bottom: 24px;
+      text-align: center;
+      color: #111827;
+      word-break: keep-all;
+    }
+    
+    .consent-box {
+      background: #f9fafb;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      height: 240px;
+      overflow-y: auto;
+      font-size: 13.5px;
+      line-height: 1.6;
+      margin-bottom: 24px;
+      color: #4b5563;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    .consent-box strong {
+      color: #1f2937;
+    }
+    
+    .form-group {
+      margin-bottom: 16px;
+    }
+    
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #374151;
+    }
+    
+    input[type="text"], input[type="tel"] {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 16px; /* Prevents auto-zoom on iOS */
+      transition: all 0.2s;
+      background-color: #f9fafb;
+    }
+    
+    input:focus {
+      outline: none;
+      border-color: var(--primary);
+      background-color: #fff;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    }
+    
+    .signature-wrapper {
+      position: relative;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #fff;
+      margin-bottom: 24px;
+      touch-action: none; /* Prevents scrolling while signing on mobile */
+    }
+    
+    canvas {
+      width: 100%;
+      height: 200px;
+      border-radius: 8px;
+      cursor: crosshair;
+    }
+    
+    .clear-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: #e5e7eb;
+      color: #374151;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .clear-btn:hover {
+      background: #d1d5db;
+    }
+    
+    .submit-btn {
+      width: 100%;
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 16px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .submit-btn:hover {
+      background: var(--primary-hover);
+    }
+    
+    .submit-btn:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+    }
+    
+    /* Custom scrollbar */
+    .consent-box::-webkit-scrollbar {
+      width: 6px;
+    }
+    .consent-box::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .consent-box::-webkit-scrollbar-thumb {
+      background: #d1d5db;
+      border-radius: 3px;
+    }
+    
+    @media (max-width: 480px) {
+      body { padding: 16px; }
+      .container { padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>개인정보 및 초상권 수집·이용 동의서</h1>
+    
+    <div class="consent-box">
+      <strong>[필수] 개인정보 및 초상권 수집·이용 동의 안내</strong><br><br>
+      배드민턴 스윙 분석 시스템 연구 및 개발을 위해 「개인정보 보호법」 제15조 및 제22조에 따라 아래와 같이 귀하의 개인정보 및 초상권을 수집·이용하고자 합니다. 내용을 자세히 읽으신 후 동의 여부를 결정해 주시기 바랍니다.<br><br>
+      <strong>1. 수집 및 이용 목적</strong><br>
+      • 배드민턴 스윙 자세 분석 및 데이터 축적<br>
+      • 스윙 분석 AI(인공지능) 알고리즘 학습용 데이터셋 구축 및 내부 연구<br>
+      (※ 수집된 영상 데이터는 당사 내부 개발팀에서만 활용되며, 외부에 공개되거나 제3자에게 제공되지 않습니다.)<br><br>
+      <strong>2. 수집하는 개인정보 및 초상권 항목</strong><br>
+      • 필수 항목: 성명, 연락처, 배드민턴 스윙 촬영 영상 (얼굴, 전신, 신체 관절 움직임 정보 포함)<br><br>
+      <strong>3. 개인정보의 보유 및 이용 기간</strong><br>
+      • 동의일로부터 3년 (보유 기간 경과 또는 이용 목적이 달성된 후에는 해당 데이터를 지체 없이 안전하게 파기합니다.)<br><br>
+      <strong>4. 동의를 거부할 권리 및 동의 거부에 따른 불이익</strong><br>
+      • 귀하는 위 개인정보 및 영상 수집·이용에 대한 동의를 거부할 법적 권리가 있습니다.<br>
+      • 단, 필수 정보 수집에 동의하지 않으실 경우 영상 촬영 및 스윙 분석 프로젝트 참여가 제한됩니다.<br><br>
+      <strong>5. 초상권 이용 동의</strong><br>
+      • 본인은 위 목적을 위해 본인의 얼굴 및 신체가 포함된 영상이 촬영되는 것과, 해당 영상이 AI 학습 및 내부 연구 목적으로 이용되는 것에 명시적으로 동의합니다.
+    </div>
+
+    <form id="consentForm">
+      <div class="form-group">
+        <label for="name">성명</label>
+        <input type="text" id="name" placeholder="홍길동" required autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label for="phone">연락처</label>
+        <input type="tel" id="phone" placeholder="010-0000-0000" required autocomplete="off">
+      </div>
+      
+      <label>서명 (위 내용에 동의하며 직접 서명합니다)</label>
+      <div class="signature-wrapper">
+        <canvas id="signatureCanvas"></canvas>
+        <button type="button" class="clear-btn" id="clearSignature">지우기</button>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submitBtn">동의 및 제출하기</button>
+    </form>
+  </div>
+
+  <!-- Signature Pad 라이브러리 -->
+  <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+  
+  <!-- Firebase SDK (ES Module 방식) -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    // 사용자님이 전달해주신 Firebase 설정
+    const firebaseConfig = {
+      apiKey: "AIzaSyCSORdzTPC4Ay5n9A9QplMUHvXTGJeCAEQ",
+      authDomain: "personal-info-consent.firebaseapp.com",
+      projectId: "personal-info-consent",
+      storageBucket: "personal-info-consent.firebasestorage.app",
+      messagingSenderId: "525882892066",
+      appId: "1:525882892066:web:7470c0ce959f08dcddcf7b",
+      measurementId: "G-TW3WDZNSCN"
+    };
+
+    // Firebase 초기화
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Signature Pad 캔버스 설정
+    const canvas = document.getElementById('signatureCanvas');
+    const signaturePad = new SignaturePad(canvas, {
+      penColor: "rgb(17, 24, 39)", // 진한 회색/검정
+      backgroundColor: "rgb(255, 255, 255)"
+    });
+
+    // 디바이스 픽셀 비율에 맞춰 캔버스 해상도 대응 (선명하게 유지)
+    function resizeCanvas() {
+      const ratio = Math.max(window.devicePixelRatio || 1, 1);
+      canvas.width = canvas.offsetWidth * ratio;
+      canvas.height = canvas.offsetHeight * ratio;
+      canvas.getContext("2d").scale(ratio, ratio);
+      signaturePad.clear(); // 크기 변경 시 내용 초기화
+    }
+
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas(); // 초기 사이즈 세팅
+
+    // 지우기 버튼
+    document.getElementById('clearSignature').addEventListener('click', () => {
+      signaturePad.clear();
+    });
+
+    // 폼 제출 이벤트
+    const form = document.getElementById('consentForm');
+    const submitBtn = document.getElementById('submitBtn');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      if (signaturePad.isEmpty()) {
+        alert("서명을 진행해 주세요.");
+        return;
+      }
+
+      const name = document.getElementById('name').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const signatureImage = signaturePad.toDataURL(); // 서명 이미지를 Base64 문자열로 변환
+
+      // 중복 제출 방지를 위한 버튼 비활성화
+      submitBtn.disabled = true;
+      submitBtn.textContent = "제출 중...";
+
+      try {
+        // Firestore 'consents' 컬렉션에 데이터 추가
+        await addDoc(collection(db, "consents"), {
+          name: name,
+          phone: phone,
+          signature: signatureImage,
+          timestamp: serverTimestamp(),
+          userAgent: navigator.userAgent
+        });
+
+        alert(`동의가 완료되었습니다.\n감사합니다, ${name} 선수님!`);
+        
+        // 키오스크 모드: 다음 사람을 위해 폼 즉시 초기화
+        form.reset();
+        signaturePad.clear();
+
+      } catch (error) {
+        console.error("데이터 저장 중 오류 발생: ", error);
+        alert("네트워크 오류가 발생했습니다. 관리자에게 문의해 주세요.");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "동의 및 제출하기";
+      }
+    });
+  </script>
+</body>
+</html>
