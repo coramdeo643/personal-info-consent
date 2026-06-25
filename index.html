@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="description" content="배드민턴 스윙 분석 시스템 - 개인정보 및 초상권 수집·이용 전자 동의서">
-  <title>전자 동의서 시스템</title>
-  
+  <title>플레이힛 개인정보 수집 및 이용 동의</title>
+
   <!-- Pretendard Web Font -->
-  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
-  
+  <link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+
   <style>
     :root {
       --primary: #3b82f6;
@@ -19,11 +21,11 @@
       --text-muted: #6b7280;
       --border: #e5e7eb;
     }
-    
+
     * {
       box-sizing: border-box;
     }
-    
+
     body {
       font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
       background-color: var(--bg);
@@ -35,7 +37,7 @@
       align-items: center;
       min-height: 100vh;
     }
-    
+
     .container {
       background: var(--surface);
       max-width: 600px;
@@ -44,7 +46,7 @@
       border-radius: 16px;
       box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     }
-    
+
     h1 {
       font-size: 24px;
       font-weight: 700;
@@ -54,7 +56,7 @@
       color: #111827;
       word-break: keep-all;
     }
-    
+
     .consent-box {
       background: #f9fafb;
       border: 1px solid var(--border);
@@ -67,11 +69,11 @@
       margin-bottom: 0;
       color: #4b5563;
     }
-    
+
     .consent-box strong {
       color: #1f2937;
     }
-    
+
     /* 스크롤 안내 배너 */
     .scroll-guide {
       display: flex;
@@ -100,7 +102,7 @@
       font-size: 16px;
       flex-shrink: 0;
     }
-    
+
     /* 폼 비활성화 상태 */
     .form-disabled {
       opacity: 0.5;
@@ -111,7 +113,7 @@
     .form-group {
       margin-bottom: 16px;
     }
-    
+
     label {
       display: block;
       font-size: 14px;
@@ -119,40 +121,43 @@
       margin-bottom: 8px;
       color: #374151;
     }
-    
-    input[type="text"], input[type="tel"] {
+
+    input[type="text"],
+    input[type="tel"] {
       width: 100%;
       padding: 14px;
       border: 1px solid var(--border);
       border-radius: 8px;
-      font-size: 16px; /* Prevents auto-zoom on iOS */
+      font-size: 16px;
+      /* Prevents auto-zoom on iOS */
       transition: all 0.2s;
       background-color: #f9fafb;
     }
-    
+
     input:focus {
       outline: none;
       border-color: var(--primary);
       background-color: #fff;
       box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
     }
-    
+
     .signature-wrapper {
       position: relative;
       border: 1px solid var(--border);
       border-radius: 8px;
       background: #fff;
       margin-bottom: 24px;
-      touch-action: none; /* Prevents scrolling while signing on mobile */
+      touch-action: none;
+      /* Prevents scrolling while signing on mobile */
     }
-    
+
     canvas {
       width: 100%;
       height: 200px;
       border-radius: 8px;
       cursor: crosshair;
     }
-    
+
     .clear-btn {
       position: absolute;
       top: 8px;
@@ -167,11 +172,11 @@
       cursor: pointer;
       transition: background 0.2s;
     }
-    
+
     .clear-btn:hover {
       background: #d1d5db;
     }
-    
+
     .submit-btn {
       width: 100%;
       background: var(--primary);
@@ -184,11 +189,11 @@
       cursor: pointer;
       transition: background 0.2s;
     }
-    
+
     .submit-btn:hover {
       background: var(--primary-hover);
     }
-    
+
     .submit-btn:disabled {
       background: #9ca3af;
       cursor: not-allowed;
@@ -218,28 +223,44 @@
       transform: translateX(-50%) translateY(0);
     }
 
-    .toast.success { background: #065f46; }
-    .toast.error { background: #991b1b; }
-    .toast.info { background: #1e40af; }
-    
+    .toast.success {
+      background: #065f46;
+    }
+
+    .toast.error {
+      background: #991b1b;
+    }
+
+    .toast.info {
+      background: #1e40af;
+    }
+
     /* Custom scrollbar */
     .consent-box::-webkit-scrollbar {
       width: 6px;
     }
+
     .consent-box::-webkit-scrollbar-track {
       background: transparent;
     }
+
     .consent-box::-webkit-scrollbar-thumb {
       background: #d1d5db;
       border-radius: 3px;
     }
-    
+
     @media (max-width: 480px) {
-      body { padding: 16px; }
-      .container { padding: 24px; }
+      body {
+        padding: 16px;
+      }
+
+      .container {
+        padding: 24px;
+      }
     }
   </style>
 </head>
+
 <body>
 
   <!-- 토스트 알림 컨테이너 -->
@@ -247,10 +268,11 @@
 
   <div class="container">
     <h1>개인정보 및 초상권 수집·이용 동의서</h1>
-    
+
     <div class="consent-box" id="consentBox">
       <strong>[필수] 개인정보 및 초상권 수집·이용 동의 안내</strong><br><br>
-      (주)플레이힛은 배드민턴 스윙 분석 시스템 연구 및 개발을 위해 「개인정보 보호법」 제15조 및 제22조에 따라 아래와 같이 귀하의 개인정보 및 초상권을 수집·이용하고자 합니다. 내용을 자세히 읽으신 후 동의 여부를 결정해 주시기 바랍니다.<br><br>
+      (주)플레이힛은 배드민턴 스윙 분석 시스템 연구 및 개발을 위해 「개인정보 보호법」 제15조 및 제22조에 따라 아래와 같이 귀하의 개인정보 및 초상권을 수집·이용하고자 합니다. 내용을 자세히 읽으신 후
+      동의 여부를 결정해 주시기 바랍니다.<br><br>
       <strong>1. 수집 및 이용 목적</strong><br>
       • 배드민턴 스윙 자세 분석 및 데이터 축적<br>
       • 스윙 분석 AI(인공지능) 알고리즘 학습용 데이터셋 구축 및 내부 연구<br>
@@ -282,13 +304,15 @@
     <form id="consentForm" class="form-disabled">
       <div class="form-group">
         <label for="name">성명</label>
-        <input type="text" id="name" placeholder="홍길동" required autocomplete="off" pattern="^[가-힣a-zA-Z\s]{2,20}$" title="올바른 성명을 입력해 주세요 (숫자, 특수문자 불가)">
+        <input type="text" id="name" placeholder="홍길동" required autocomplete="off" pattern="^[가-힣a-zA-Z\s]{2,20}$"
+          title="올바른 성명을 입력해 주세요 (숫자, 특수문자 불가)">
       </div>
       <div class="form-group">
         <label for="phone">연락처</label>
-        <input type="tel" id="phone" placeholder="010-0000-0000" required autocomplete="off" pattern="^01[016789]-?\d{3,4}-?\d{4}$" title="올바른 휴대폰 번호 형식을 입력해 주세요 (예: 010-1234-5678)">
+        <input type="tel" id="phone" placeholder="010-0000-0000" required autocomplete="off"
+          pattern="^01[016789]-?\d{3,4}-?\d{4}$" title="올바른 휴대폰 번호 형식을 입력해 주세요 (예: 010-1234-5678)">
       </div>
-      
+
       <label>서명 (위 내용에 동의하며 직접 서명합니다)</label>
       <div class="signature-wrapper">
         <canvas id="signatureCanvas" role="img" aria-label="서명 영역"></canvas>
@@ -301,9 +325,9 @@
 
   <!-- Signature Pad 라이브러리 (SRI 적용) -->
   <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"
-          integrity="sha384-dPowQo9uxJU703klzvnG+vzLHQDNmO/zREXw6BhCMupB54CE70wj6SWOGVPySK3s"
-          crossorigin="anonymous"></script>
-  
+    integrity="sha384-dPowQo9uxJU703klzvnG+vzLHQDNmO/zREXw6BhCMupB54CE70wj6SWOGVPySK3s"
+    crossorigin="anonymous"></script>
+
   <!-- Firebase SDK (ES Module 방식) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -491,7 +515,7 @@
       }
 
       const name = document.getElementById('name').value.trim();
-      
+
       // 이름 유효성 검사 (정규식)
       const nameRegex = /^[가-힣a-zA-Z\s]{2,20}$/;
       if (!nameRegex.test(name)) {
@@ -501,7 +525,7 @@
       }
 
       const phone = document.getElementById('phone').value.trim();
-      
+
       // 연락처 유효성 검사 (정규식)
       const phoneRegex = /^01[016789]-?\d{3,4}-?\d{4}$/;
       if (!phoneRegex.test(phone)) {
@@ -532,7 +556,7 @@
         });
 
         alert(`동의가 완료되었습니다.\n감사합니다, ${name} 선수님!`);
-        
+
         // 다음 사람을 위해 폼 즉시 초기화
         form.reset();
         signaturePad.clear();
@@ -567,4 +591,5 @@
     });
   </script>
 </body>
+
 </html>
