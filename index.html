@@ -206,7 +206,7 @@
       </div>
       <div class="form-group">
         <label for="phone">연락처</label>
-        <input type="tel" id="phone" placeholder="010-0000-0000" required autocomplete="off">
+        <input type="tel" id="phone" placeholder="010-0000-0000" required autocomplete="off" pattern="^01[016789]-?\d{3,4}-?\d{4}$" title="올바른 휴대폰 번호 형식을 입력해 주세요 (예: 010-1234-5678)">
       </div>
       
       <label>서명 (위 내용에 동의하며 직접 서명합니다)</label>
@@ -280,6 +280,15 @@
 
       const name = document.getElementById('name').value.trim();
       const phone = document.getElementById('phone').value.trim();
+      
+      // 연락처 유효성 검사 (정규식)
+      const phoneRegex = /^01[016789]-?\d{3,4}-?\d{4}$/;
+      if (!phoneRegex.test(phone)) {
+        alert("올바른 휴대폰 번호를 입력해 주세요.\n(예: 010-1234-5678)");
+        document.getElementById('phone').focus();
+        return;
+      }
+
       const signatureImage = signaturePad.toDataURL(); // 서명 이미지를 Base64 문자열로 변환
 
       // 중복 제출 방지를 위한 버튼 비활성화
