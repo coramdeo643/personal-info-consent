@@ -292,7 +292,7 @@
         <button type="button" class="clear-btn" id="clearSignature">지우기</button>
       </div>
 
-      <button type="submit" class="submit-btn" id="submitBtn">동의 및 제출하기</button>
+      <button type="submit" class="submit-btn" id="submitBtn" disabled>동의 및 제출하기</button>
     </form>
   </div>
 
@@ -368,6 +368,7 @@
     // 지우기 버튼
     document.getElementById('clearSignature').addEventListener('click', () => {
       signaturePad.clear();
+      validateForm();
     });
 
     // ── 스크롤 가드: 동의 내용을 끝까지 읽어야 폼 활성화 ──
@@ -392,6 +393,21 @@
     }
 
     consentBox.addEventListener('scroll', checkScrollEnd);
+
+    // ── 폼 유효성 실시간 검증: 성명 + 연락처 + 서명 모두 입력 시 버튼 활성화 ──
+    const nameInput = document.getElementById('name');
+    const phoneInputEl = document.getElementById('phone');
+
+    function validateForm() {
+      const nameOk = nameInput.value.trim().length >= 2;
+      const phoneOk = phoneInputEl.value.replace(/[^0-9]/g, '').length >= 10;
+      const signOk = !signaturePad.isEmpty();
+      submitBtn.disabled = !(consentRead && nameOk && phoneOk && signOk);
+    }
+
+    nameInput.addEventListener('input', validateForm);
+    phoneInputEl.addEventListener('input', validateForm);
+    signaturePad.addEventListener('endStroke', validateForm);
     checkInitialScroll();
 
     // ── 연락처 자동 하이픈 포맷 ──
@@ -551,8 +567,8 @@
         alert(userMessage);
 
       } finally {
-        submitBtn.disabled = false;
         submitBtn.textContent = "동의 및 제출하기";
+        validateForm(); // 초기화 후 버튼 상태 재검증
       }
     });
   </script>
