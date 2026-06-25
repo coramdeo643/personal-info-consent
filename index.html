@@ -59,49 +59,28 @@
 
     .consent-box {
       background: #f9fafb;
-      border: 1px solid var(--border);
+      border: 2px solid var(--border);
       border-radius: 8px;
       padding: 20px;
       height: 240px;
       overflow-y: auto;
       font-size: 13.5px;
       line-height: 1.6;
-      margin-bottom: 0;
+      margin-bottom: 24px;
       color: #4b5563;
+      transition: border-color 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .consent-box.confirmed {
+      border-color: #34d399;
+      box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.15);
     }
 
     .consent-box strong {
       color: #1f2937;
     }
 
-    /* 스크롤 안내 배너 */
-    .scroll-guide {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      background: #fef3c7;
-      color: #92400e;
-      font-size: 13px;
-      font-weight: 500;
-      padding: 10px;
-      border-radius: 0 0 8px 8px;
-      border: 1px solid #fde68a;
-      border-top: none;
-      margin-bottom: 24px;
-      transition: all 0.3s ease;
-    }
 
-    .scroll-guide.confirmed {
-      background: #d1fae5;
-      color: #065f46;
-      border-color: #a7f3d0;
-    }
-
-    .scroll-guide-icon {
-      font-size: 16px;
-      flex-shrink: 0;
-    }
 
     /* 폼 비활성화 상태 */
     .form-disabled {
@@ -295,12 +274,6 @@
       • 연락처: 010-5789-9338
     </div>
 
-    <!-- 스크롤 안내 배너 -->
-    <div class="scroll-guide" id="scrollGuide">
-      <span class="scroll-guide-icon">⬇️</span>
-      <span id="scrollGuideText">동의 내용을 끝까지 읽어주세요</span>
-    </div>
-
     <form id="consentForm" class="form-disabled">
       <div class="form-group">
         <label for="name">성명</label>
@@ -400,29 +373,22 @@
     // ── 스크롤 가드: 동의 내용을 끝까지 읽어야 폼 활성화 ──
     const consentBox = document.getElementById('consentBox');
     const consentForm = document.getElementById('consentForm');
-    const scrollGuide = document.getElementById('scrollGuide');
-    const scrollGuideText = document.getElementById('scrollGuideText');
     let consentRead = false;
 
+    function activateForm() {
+      consentRead = true;
+      consentForm.classList.remove('form-disabled');
+      consentBox.classList.add('confirmed');
+    }
+
     function checkScrollEnd() {
-      // 스크롤 위치 + 보이는 높이 >= 전체 높이 - 10px 오차 허용
       const atBottom = consentBox.scrollTop + consentBox.clientHeight >= consentBox.scrollHeight - 10;
-      if (atBottom && !consentRead) {
-        consentRead = true;
-        consentForm.classList.remove('form-disabled');
-        scrollGuide.classList.add('confirmed');
-        scrollGuideText.textContent = '✓ 동의 내용을 확인하였습니다';
-      }
+      if (atBottom && !consentRead) activateForm();
     }
 
     // 내용이 스크롤 불필요할 만큼 짧으면 즉시 활성화
     function checkInitialScroll() {
-      if (consentBox.scrollHeight <= consentBox.clientHeight + 10) {
-        consentRead = true;
-        consentForm.classList.remove('form-disabled');
-        scrollGuide.classList.add('confirmed');
-        scrollGuideText.textContent = '✓ 동의 내용을 확인하였습니다';
-      }
+      if (consentBox.scrollHeight <= consentBox.clientHeight + 10) activateForm();
     }
 
     consentBox.addEventListener('scroll', checkScrollEnd);
